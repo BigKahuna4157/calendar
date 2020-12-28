@@ -37,7 +37,7 @@ public class Calendar {
             Path lDatabase = Paths.get(DATABASE_LOCATION, DATABASE_FILENAME);
             JSONArray lEvents = new JSONArray(Files.readString(lDatabase));
             for (int i = 0; i < lEvents.length(); i++) {
-                arr.getJSONObject(i);
+                array.getJSONObject(i);
             }
         } catch (IOException ignore) {
         }
