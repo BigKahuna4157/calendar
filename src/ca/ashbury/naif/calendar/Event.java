@@ -3,7 +3,10 @@ package ca.ashbury.naif.calendar;
 import org.json.JSONObject;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Timer;
 
 public class Event {
 
@@ -21,6 +24,8 @@ public class Event {
     private String location;
     private String note;
     private JSONObject json;
+    private Notifier notifier;
+    private Timer timer;
 
     public Event(long id, String name, LocalDateTime time, String location, String note) {
         this.id = id;
@@ -28,6 +33,11 @@ public class Event {
         this.time = time;
         this.location = location;
         this.note = note;
+        this.timer = new Timer();
+        this.notifier = new Notifier(this);
+        Date date = Date.from(time.atZone(ZoneId.systemDefault()).toInstant());
+        timer.schedule(notifier, date);
+        System.out.println(notifier.cancel());
     }
 
     public Event(String name, LocalDateTime time, String location, String note) {

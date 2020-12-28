@@ -21,6 +21,7 @@ public class Calendar {
 
     private Calendar() {
         events = new HashMap<>();
+        loadEvents();
     }
 
     public static Calendar getInstance() {
@@ -32,12 +33,12 @@ public class Calendar {
 
     private void loadEvents() {
         try {
-            JSONObject lEventJson;
-            Event
+            Event lEvent;
             Path lDatabase = Paths.get(DATABASE_LOCATION, DATABASE_FILENAME);
             JSONArray lEvents = new JSONArray(Files.readString(lDatabase));
             for (int i = 0; i < lEvents.length(); i++) {
-                array.getJSONObject(i);
+                lEvent = new Event(lEvents.getJSONObject(i));
+                events.put(lEvent.getId(), lEvent);
             }
         } catch (IOException ignore) {
         }

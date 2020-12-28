@@ -17,10 +17,7 @@ public class Controller {
     @FXML
     private void createEvent(ActionEvent event) {
         event.consume();
-        label.setText("OK");
-        LocalDateTime fiveSecondsLater = LocalDateTime.now().plusSeconds(5);
-        Date fiveSecondsLaterAsDate = Date.from(fiveSecondsLater.atZone(ZoneId.systemDefault()).toInstant());
-        new Timer().schedule(new Notifier(label, "WAKE UP!"), fiveSecondsLaterAsDate);
+        Event lEvent = new Event(0, "WAKE UP!", LocalDateTime.now().plusSeconds(5), "Ottawa", "wake me up in 5 seconds");
     }
 
 }

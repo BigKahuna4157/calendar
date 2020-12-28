@@ -7,20 +7,15 @@ import javafx.scene.control.Label;
 
 public class Notifier extends TimerTask {
 
-    private Label label;
+    private Event event;
 
-    private String message;
-
-    public Notifier(Label label, String message) {
-        this.label = label;
-        this.message = message;
+    public Notifier(Event event) {
+        this.event = event;
     }
 
     @Override
     public void run() {
-        Platform.runLater(() -> {
-            label.setText(message);
-        });
+        System.out.println("Event: '" + event.getName() + "'");
     }
 
 }
