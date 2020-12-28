@@ -37,7 +37,6 @@ public class Event {
         this.notifier = new Notifier(this);
         Date date = Date.from(time.atZone(ZoneId.systemDefault()).toInstant());
         timer.schedule(notifier, date);
-        System.out.println(notifier.cancel());
     }
 
     public Event(String name, LocalDateTime time, String location, String note) {
