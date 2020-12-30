@@ -4,18 +4,18 @@ import java.time.LocalDateTime;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class Controller {
 
     private Calendar calendar;
 
-    public Controller() {
-        calendar = Calendar.getInstance();
-    }
+    @FXML
+    TableView tvEvents;
 
     @FXML
     TextField tfTime;
@@ -33,20 +33,41 @@ public class Controller {
     TextArea taNotify;
 
     @FXML
-    private void createEvent(ActionEvent event) {
-        event.consume();
-        System.out.println(tfTime.getText());
-        LocalDateTime time = LocalDateTime.parse(tfTime.getText().replace(" ","T"));
-        System.out.println(time);
-        System.out.println(tfName.getText());
-        System.out.println(taLocation.getText());
-        System.out.println(taNote.getText());
+    TableColumn id;
+
+    @FXML
+    TableColumn name;
+
+    @FXML
+    TableColumn time;
+
+    @FXML
+    TableColumn address;
+
+    @FXML
+    TableColumn note;
+
+    public Controller() {
+        calendar = Calendar.getInstance();
     }
-/*
+
     @FXML
     private void createEvent(ActionEvent event) {
         event.consume();
-        calendar.createEvent("WAKE UP!", LocalDateTime.now().plusSeconds(5), "Ottawa", "wake me up in 5 seconds");
+        calendar.createEvent(tfName.getText(), LocalDateTime.parse(tfTime.getText().replace(" ", "T")), taLocation.getText(), taNote.getText());
     }
-*/
+
+    @FXML
+    private void loadEvents(ActionEvent event) {
+        event.consume();
+        id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        time.setCellValueFactory(new PropertyValueFactory<>("time"));
+        address.setCellValueFactory(new PropertyValueFactory<>("location"));
+        note.setCellValueFactory(new PropertyValueFactory<>("note"));
+        for (Event lEvent : calendar.getEvents()) {
+            tvEvents.getItems().add(lEvent);
+        }
+    }
+
 }

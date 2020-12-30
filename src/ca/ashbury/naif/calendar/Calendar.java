@@ -3,11 +3,11 @@ package ca.ashbury.naif.calendar;
 import org.json.JSONArray;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -19,7 +19,7 @@ public class Calendar {
 
     private static Calendar INSTANCE;
 
-    Map<Long, Event> events;
+    private Map<Long, Event> events;
 
     private Calendar() {
         events = new HashMap<>();
@@ -53,6 +53,10 @@ public class Calendar {
         saveEvents();
     }
 
+    Collection<Event> getEvents() {
+        return events.values();
+    }
+
     private void loadEvents() {
         try {
             Event lEvent;
@@ -70,8 +74,8 @@ public class Calendar {
     public void saveEvents() {
         try {
             Path lDatabase = Paths.get(DATABASE_LOCATION, DATABASE_FILENAME);
-            JSONArray lEvents = new JSONArray(events.values().stream().map(event -> event.getJson()).collect(Collectors.toList()));
-            Files.write(lDatabase, lEvents.toString(2).getBytes(StandardCharsets.UTF_8));
+            JSONArray lEvents = new JSONArray(events.values().stream().map(Event::getJson).collect(Collectors.toList()));
+            Files.writeString(lDatabase, lEvents.toString(2));
             System.out.println("saved: " + lEvents);
         } catch (IOException exception) {
             throw new RuntimeException(exception);

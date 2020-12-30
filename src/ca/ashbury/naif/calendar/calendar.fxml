@@ -5,12 +5,12 @@
 
 <GridPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.ashbury.naif.calendar.Controller">
   <children>
-    <TableView GridPane.rowIndex="0">
+    <TableView fx:id="tvEvents" GridPane.rowIndex="0">
       <columns>
         <TableColumn fx:id="id" prefWidth="100.0" text="ID" visible="false" />
         <TableColumn fx:id="time" prefWidth="200.0" text="Time" />
         <TableColumn fx:id="name" prefWidth="200.0" sortable="false" text="Name" />
-        <TableColumn fx:id="location" prefWidth="400.0" sortable="false" text="Location" />
+        <TableColumn fx:id="address" prefWidth="400.0" sortable="false" text="Location" />
         <TableColumn fx:id="note" prefWidth="400.0" sortable="false" text="note" />
       </columns>
     </TableView>
@@ -21,6 +21,7 @@
         <TextArea fx:id="taLocation" prefWidth="400.0" GridPane.columnIndex="3" GridPane.rowSpan="2" />
         <TextArea fx:id="taNote" prefWidth="400.0" GridPane.columnIndex="4" GridPane.rowSpan="2" />
         <TextArea fx:id="taNotify" prefWidth="400.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="1" />
+        <Button onAction="#loadEvents" text="Load Events" GridPane.columnIndex="6" GridPane.rowIndex="0" />
         <Button onAction="#createEvent" text="Add Event" GridPane.columnIndex="6" GridPane.rowIndex="1" />
       </children>
       <columnConstraints>
