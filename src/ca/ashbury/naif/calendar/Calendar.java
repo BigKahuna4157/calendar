@@ -33,6 +33,26 @@ public class Calendar {
         return INSTANCE;
     }
 
+    public void createEvent(String name, LocalDateTime time, String location, String note) {
+        Event lEvent = new Event(name, time, location, note);
+        events.put(lEvent.getId(), lEvent);
+        saveEvents();
+    }
+
+    public void modifyEvent(Long id, String name, LocalDateTime time, String location, String note) {
+        Event lEvent = events.get(id);
+        lEvent.setName(name);
+        lEvent.setTime(time);
+        lEvent.setLocation(location);
+        lEvent.setNote(note);
+        saveEvents();
+    }
+
+    public void deleteEvent(Long id) {
+        events.remove(id);
+        saveEvents();
+    }
+
     private void loadEvents() {
         try {
             Event lEvent;
@@ -45,11 +65,6 @@ public class Calendar {
             System.out.println("loaded: " + lEvents);
         } catch (IOException ignore) {
         }
-    }
-
-    public void createEvent() {
-        Event lEvent = new Event("WAKE UP!", LocalDateTime.now().plusSeconds(5), "Ottawa", "wake me up in 5 seconds");
-        events.put(lEvent.getId(), lEvent);
     }
 
     public void saveEvents() {
