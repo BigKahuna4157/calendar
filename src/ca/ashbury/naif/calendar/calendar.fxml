@@ -1,28 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
 
 <GridPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.ashbury.naif.calendar.Controller">
   <children>
-    <TableView fx:id="tvEvents" GridPane.rowIndex="0">
+    <TableView fx:id="tvEvents" editable="true" GridPane.rowIndex="0">
       <columns>
-        <TableColumn fx:id="id" prefWidth="100.0" text="ID" visible="false" />
-        <TableColumn fx:id="time" prefWidth="200.0" text="Time" />
-        <TableColumn fx:id="name" prefWidth="200.0" sortable="false" text="Name" />
-        <TableColumn fx:id="address" prefWidth="400.0" sortable="false" text="Location" />
-        <TableColumn fx:id="note" prefWidth="400.0" sortable="false" text="note" />
+        <TableColumn fx:id="id" prefWidth="100.0" text="ID" visible="false">
+          <cellValueFactory>
+            <PropertyValueFactory property="id" />
+          </cellValueFactory>
+        </TableColumn>
+        <TableColumn fx:id="time" prefWidth="200.0" text="Time">
+          <cellValueFactory>
+            <PropertyValueFactory property="time" />
+          </cellValueFactory>
+        </TableColumn>
+        <TableColumn fx:id="name" prefWidth="200.0" sortable="false" text="Name">
+          <cellValueFactory>
+            <PropertyValueFactory property="name" />
+          </cellValueFactory>
+        </TableColumn>
+        <TableColumn fx:id="address" prefWidth="400.0" sortable="false" text="Location">
+          <cellValueFactory>
+            <PropertyValueFactory property="location" />
+          </cellValueFactory>
+        </TableColumn>
+        <TableColumn fx:id="note" prefWidth="400.0" sortable="false" text="note">
+          <cellValueFactory>
+            <PropertyValueFactory property="note" />
+          </cellValueFactory>
+        </TableColumn>
       </columns>
     </TableView>
     <GridPane GridPane.rowIndex="1">
       <children>
         <TextField fx:id="tfTime" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowSpan="1" />
         <TextField fx:id="tfName" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowSpan="1" />
-        <TextArea fx:id="taLocation" prefWidth="400.0" GridPane.columnIndex="3" GridPane.rowSpan="2" />
-        <TextArea fx:id="taNote" prefWidth="400.0" GridPane.columnIndex="4" GridPane.rowSpan="2" />
+        <TextArea fx:id="taLocation" prefWidth="400.0" GridPane.columnIndex="3" GridPane.rowSpan="3" />
+        <TextArea fx:id="taNote" prefWidth="400.0" GridPane.columnIndex="4" GridPane.rowSpan="3" />
         <TextArea fx:id="taNotify" prefWidth="400.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="1" />
-        <Button onAction="#loadEvents" text="Load Events" GridPane.columnIndex="6" GridPane.rowIndex="0" />
-        <Button onAction="#createEvent" text="Add Event" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+        <Button onAction="#createEvent" text="Add Event" GridPane.columnIndex="6" GridPane.rowIndex="0" />
+        <Button onAction="#modifyEvent" text="Modify Event" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+        <Button onAction="#deleteEvent" text="Delete Event" GridPane.columnIndex="6" GridPane.rowIndex="2" />
       </children>
       <columnConstraints>
         <ColumnConstraints />
@@ -31,10 +53,11 @@
         <ColumnConstraints />
         <ColumnConstraints />
         <ColumnConstraints />
+            <ColumnConstraints />
       </columnConstraints>
       <rowConstraints>
         <RowConstraints />
-            <RowConstraints />
+        <RowConstraints />
       </rowConstraints>
     </GridPane>
   </children>
