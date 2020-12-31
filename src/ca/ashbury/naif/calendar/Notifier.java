@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 public class Notifier extends TimerTask {
 
     private Event event;
+    private Calendar calendar;
 
     public Notifier(Event event) {
         this.event = event;
@@ -15,7 +16,9 @@ public class Notifier extends TimerTask {
 
     @Override
     public void run() {
-        System.out.println("Event: '" + event.getName() + "'");
+        Platform.runLater(() -> {
+            Calendar.getInstance().getNotify().setText("Event: '" + event.getName() + "'");
+        });
     }
 
 }

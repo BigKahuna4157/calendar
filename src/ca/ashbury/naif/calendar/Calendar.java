@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javafx.scene.control.Label;
+
 public class Calendar {
 
     private static final String DATABASE_FILENAME = "calendar.json";
@@ -20,6 +22,7 @@ public class Calendar {
     private static Calendar INSTANCE;
 
     private Map<Long, Event> events;
+    private Label notify;
 
     private Calendar() {
         events = new HashMap<>();
@@ -40,11 +43,8 @@ public class Calendar {
     }
 
     public void modifyEvent(Long id, String name, LocalDateTime time, String location, String note) {
-        Event lEvent = events.get(id);
-        lEvent.setName(name);
-        lEvent.setTime(time);
-        lEvent.setLocation(location);
-        lEvent.setNote(note);
+        Event lEvent = new Event(id, name, time, location, note);
+        events.put(lEvent.getId(), lEvent);
         saveEvents();
     }
 
@@ -66,7 +66,6 @@ public class Calendar {
                 lEvent = new Event(lEvents.getJSONObject(i));
                 events.put(lEvent.getId(), lEvent);
             }
-            System.out.println("loaded: " + lEvents);
         } catch (IOException ignore) {
         }
     }
@@ -76,10 +75,17 @@ public class Calendar {
             Path lDatabase = Paths.get(DATABASE_LOCATION, DATABASE_FILENAME);
             JSONArray lEvents = new JSONArray(events.values().stream().map(Event::getJson).collect(Collectors.toList()));
             Files.writeString(lDatabase, lEvents.toString(2));
-            System.out.println("saved: " + lEvents);
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+    }
+
+    public Label getNotify() {
+        return notify;
+    }
+
+    public void setNotify(Label notify) {
+        this.notify = notify;
     }
 
 }

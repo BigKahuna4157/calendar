@@ -8,11 +8,13 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.converter.DefaultStringConverter;
 import javafx.util.converter.LocalDateTimeStringConverter;
 
 public class Controller implements Initializable {
@@ -37,7 +39,7 @@ public class Controller implements Initializable {
     TextArea taNote;
 
     @FXML
-    TextArea taNotify;
+    Label laNotify;
 
     @FXML
     TableColumn id;
@@ -55,16 +57,17 @@ public class Controller implements Initializable {
     TableColumn note;
 
     public Controller() {
-        calendar = Calendar.getInstance();
+        this.calendar = Calendar.getInstance();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadEvents();
-        time.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateTimeStringConverter()));
-        name.setCellFactory(TextFieldTableCell.forTableColumn());
-        address.setCellFactory(TextFieldTableCell.forTableColumn());
-        note.setCellFactory(TextFieldTableCell.forTableColumn());
+        time.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateTimeStringConverter(formatter, formatter)));
+        name.setCellFactory(TextFieldTableCell.forTableColumn(new DefaultStringConverter()));
+        address.setCellFactory(TextFieldTableCell.forTableColumn(new DefaultStringConverter()));
+        note.setCellFactory(TextFieldTableCell.forTableColumn(new DefaultStringConverter()));
+        calendar.setNotify(laNotify);
     }
 
     private void loadEvents() {
@@ -72,6 +75,10 @@ public class Controller implements Initializable {
         for (Event lEvent : calendar.getEvents()) {
             tvEvents.getItems().add(lEvent);
         }
+    }
+
+    private void modifyEvent(Event event) {
+        calendar.modifyEvent(event.getId(), event.getName(), event.getTime(), event.getLocation(), event.getNote());
     }
 
     @FXML
@@ -82,16 +89,43 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    private void modifyEvent(ActionEvent event) {
+    private void modifyName(TableColumn.CellEditEvent<Event, String> event) {
         event.consume();
+        tvEvents.getItems().get(event.getTablePosition().getRow()).setName(event.getNewValue());
+        Event lEvent = tvEvents.getSelectionModel().getSelectedItem();
+        modifyEvent(lEvent);
+    }
+
+    @FXML
+    private void modifyTime(TableColumn.CellEditEvent<Event, LocalDateTime> event) {
+        event.consume();
+        tvEvents.getItems().get(event.getTablePosition().getRow()).setTime(event.getNewValue());
+        Event lEvent = tvEvents.getSelectionModel().getSelectedItem();
+        modifyEvent(lEvent);
+    }
+
+    @FXML
+    private void modifyLocation(TableColumn.CellEditEvent<Event, String> event) {
+        event.consume();
+        tvEvents.getItems().get(event.getTablePosition().getRow()).setLocation(event.getNewValue());
+        Event lEvent = tvEvents.getSelectionModel().getSelectedItem();
+        modifyEvent(lEvent);
+    }
+
+    @FXML
+    private void modifyNote(TableColumn.CellEditEvent<Event, String> event) {
+        event.consume();
+        tvEvents.getItems().get(event.getTablePosition().getRow()).setNote(event.getNewValue());
+        Event lEvent = tvEvents.getSelectionModel().getSelectedItem();
+        modifyEvent(lEvent);
     }
 
     @FXML
     private void deleteEvent(ActionEvent event) {
         event.consume();
-        Event levent = tvEvents.getSelectionModel().getSelectedItem();
-        calendar.deleteEvent(levent.getId());
-        loadEvents();
+        Event lEvent = tvEvents.getSelectionModel().getSelectedItem();
+        calendar.deleteEvent(lEvent.getId());
+        tvEvents.getItems().removeAll(tvEvents.getSelectionModel().getSelectedItems());
     }
 
 }
